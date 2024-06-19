@@ -11,3 +11,19 @@ def sum_to(n) =
     else
         0
 ```
+
+## Usage
+
+Prerequisites:
+- [OCaml](https://ocaml.org/install)
+- [WebAssembly Binary Toolkit (`wabt`)](https://github.com/WebAssembly/wabt)
+
+Install the dependencies:
+```sh
+opam install core
+```
+
+Run a `.ctwfs` file:
+```sh
+sh run.sh examples/sum_to.ctwfs
+```
