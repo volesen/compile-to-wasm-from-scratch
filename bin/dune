@@ -1,4 +1,6 @@
 (executable
  (public_name compile_to_wasm_from_scratch)
  (name main)
- (libraries compile_to_wasm_from_scratch))
+ (libraries compile_to_wasm_from_scratch core core_unix.command_unix)
+ (preprocess
+  (pps ppx_jane)))

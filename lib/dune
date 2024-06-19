@@ -1,5 +1,8 @@
 (library
- (name compile_to_wasm_from_scratch))
+ (name compile_to_wasm_from_scratch)
+ (libraries core)
+ (preprocess
+  (pps ppx_jane)))
 
 (menhir
  (modules parser))
