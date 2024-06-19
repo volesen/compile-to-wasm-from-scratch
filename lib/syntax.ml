@@ -1,8 +1,5 @@
 type id = string
-
-type unop =
-  | Neg
-  | Not
+type unop = Neg
 
 type binop =
   | Add
@@ -11,7 +8,7 @@ type binop =
   | Div
 
 type expr =
-  | IntLit of int32
+  | IntLit of int
   | Var of id
   | UnOp of unop * expr
   | BinOp of binop * expr * expr
