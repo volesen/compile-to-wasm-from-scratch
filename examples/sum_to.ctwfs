@@ -1,0 +1,8 @@
+def sum_to(n) =
+    if n then
+        n + sum_to(n - 1)
+    else
+        0
+
+def main() =
+    sum_to(10)

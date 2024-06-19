@@ -1,2 +1,7 @@
 (library
  (name compile_to_wasm_from_scratch))
+
+(menhir
+ (modules parser))
+
+(ocamllex lexer)
