@@ -2,18 +2,16 @@ open Base
 open Sexplib.Sexp
 open Syntax
 
-let rec num_lets expr =
+let rec count_let expr =
   match expr with
   | IntLit _ | Var _ -> 0
-  | UnOp (_, e) -> num_lets e
-  | BinOp (_, e1, e2) -> num_lets e1 + num_lets e2
-  | If (e1, e2, e3) -> num_lets e1 + num_lets e2 + num_lets e3
-  | Seq (e1, e2) -> num_lets e1 + num_lets e2
-  | Call (_, args) -> List.fold args ~init:0 ~f:(fun acc e -> acc + num_lets e)
-  | Let (_, e1, e2) -> 1 + num_lets e1 + num_lets e2
+  | UnOp (_, e) -> count_let e
+  | BinOp (_, e1, e2) -> count_let e1 + count_let e2
+  | If (e1, e2, e3) -> count_let e1 + max (count_let e2) (count_let e3)
+  | Seq (e1, e2) -> count_let e1 + count_let e2
+  | Call (_, args) -> List.sum (module Int) args ~f:count_let
+  | Let (_, e1, e2) -> 1 + count_let e1 + count_let e2
 ;;
-
-let empty_env = Map.empty (module String)
 
 let compile_unop op : Sexp.t list =
   match op with
@@ -41,7 +39,7 @@ let rec compile_expr ftab vtab expr : Sexp.t list =
           [ Atom "if"
           ; List [ Atom "result"; Atom "i32" ]
           ; List ([ Atom "then" ] @ compile_expr ftab vtab e2)
-          ; List ([ Atom "else" ] @ compile_expr ftab vtab e3) (* ; Atom "end" *)
+          ; List ([ Atom "else" ] @ compile_expr ftab vtab e3)
           ]
       ]
   | Seq (e1, e2) ->
@@ -57,11 +55,13 @@ let rec compile_expr ftab vtab expr : Sexp.t list =
     @ compile_expr ftab vtab' e2
 ;;
 
+let empty_tab = Map.empty (module String)
+
 let compile_decl ftab name params body : Sexp.t =
   let vtab =
-    List.foldi params ~init:empty_env ~f:(fun i env x -> Map.set env ~key:x ~data:i)
+    List.foldi params ~init:empty_tab ~f:(fun i env x -> Map.set env ~key:x ~data:i)
   in
-  let num_locals = num_lets body in
+  let num_locals = count_let body in
   List
     ([ Atom "func"; List [ Atom "export"; Atom ("\"" ^ name ^ "\"") ] ]
      @ List.map params ~f:(fun _ -> List [ Atom "param"; Atom "i32" ])
@@ -72,7 +72,7 @@ let compile_decl ftab name params body : Sexp.t =
 
 let compile_prog decls : Sexp.t =
   let ftab =
-    List.foldi decls ~init:empty_env ~f:(fun i env (name, _, _) ->
+    List.foldi decls ~init:empty_tab ~f:(fun i env (name, _, _) ->
       Map.set env ~key:name ~data:i)
   in
   List
