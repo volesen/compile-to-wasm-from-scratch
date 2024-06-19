@@ -5,22 +5,22 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github volesen/compile-to-wasm-from-scratch))
 
-(authors "Author Name")
+(authors "volesen")
 
-(maintainers "Maintainer Name")
+(maintainers "volesen")
 
 (license LICENSE)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/volesen/compile-to-wasm-from-scratch)
 
 (package
  (name compile_to_wasm_from_scratch)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "A compiler for a toy language to WebAssembly")
+ (description "A compiler for a toy language to WebAssembly")
  (depends ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (wasm compiler)))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
