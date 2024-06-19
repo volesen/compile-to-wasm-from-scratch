@@ -1,0 +1,2 @@
+(test
+ (name test_compile_to_wasm_from_scratch))
