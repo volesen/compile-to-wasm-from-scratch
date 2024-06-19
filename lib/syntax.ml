@@ -2,6 +2,7 @@ type id = string
 type unop = Neg
 
 type binop =
+  | Eq
   | Add
   | Sub
   | Mul

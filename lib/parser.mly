@@ -23,6 +23,7 @@
 %right SEMICOLON
 %nonassoc IN
 %nonassoc ELSE
+%right EQUAL
 %left PLUS MINUS
 %left STAR SLASH
 
@@ -51,6 +52,7 @@ expr:
   | MINUS { Neg }
 
 %inline binop:
+  | EQUAL { Eq }
   | PLUS { Add }
   | MINUS { Sub }
   | STAR { Mul }

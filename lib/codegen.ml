@@ -20,6 +20,7 @@ let compile_unop op : Sexp.t list =
 
 let compile_binop op : Sexp.t list =
   match op with
+  | Eq -> [ Atom "i32.eq" ]
   | Add -> [ Atom "i32.add" ]
   | Sub -> [ Atom "i32.sub" ]
   | Mul -> [ Atom "i32.mul" ]
